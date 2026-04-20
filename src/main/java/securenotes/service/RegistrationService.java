@@ -1,5 +1,6 @@
 package securenotes.service;
 
+import org.mindrot.jbcrypt.BCrypt;
 import securenotes.repository.UserRepository;
 
 public class RegistrationService {
@@ -15,6 +16,9 @@ public class RegistrationService {
             System.out.println("Password is empty");
             return false;
         }
-        return repository.saveUser(username,password, "USER");
+
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        return repository.saveUser(username,hashedPassword, "USER");
     }
 }

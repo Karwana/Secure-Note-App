@@ -13,13 +13,15 @@ public class ConsoleMenu {
 
         while (running) {
             System.out.println("1. Register");
-            System.out.println("2. Exit");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> register();
-                case "2" -> running = false;
+                case "2" -> login();
+                case "3" -> running = false;
                 default -> System.out.println("Invalid choice");
             }
 
@@ -40,6 +42,13 @@ public class ConsoleMenu {
         } else {
             System.out.println("Registration failed");
         }
+    }
+
+    private void login() {
+        System.out.println("Username: ");
+        String username = scanner.nextLine();
+        System.out.println("Password: ");
+        String password = scanner.nextLine();
     }
 
 }
