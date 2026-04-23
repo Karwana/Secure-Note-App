@@ -34,11 +34,10 @@ public class UserRepository {
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, username);
+             statement.setString(1, username);
+             ResultSet rs = statement.executeQuery();
 
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
+             if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
                 user.setUsername(rs.getString("username"));
