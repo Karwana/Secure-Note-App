@@ -34,18 +34,18 @@ public class UserRepository {
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
             statement.setString(1, username);
 
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    User user = new User();
-                    user.setUsername(rs.getString("username"));
-                    user.setPassword(rs.getString("password"));
-                    return user;
-                }
-            }
+            ResultSet rs = statement.executeQuery();
 
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(rs.getString("role"));
+                return user;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
