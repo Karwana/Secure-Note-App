@@ -11,6 +11,7 @@ public class AuthenticationService {
     public boolean login(String username, String password) {
         User user = repository.getUserByUsername(username);
         if (user == null) {
+            System.out.println("User not found");
             return false;
         }
         else return BCrypt.checkpw(password, user.getPassword());
