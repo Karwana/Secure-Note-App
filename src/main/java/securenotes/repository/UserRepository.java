@@ -21,8 +21,8 @@ public class UserRepository {
             statement.setString(3, role);
 
             int rows = statement.executeUpdate();
-
             return rows > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -34,10 +34,10 @@ public class UserRepository {
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-             statement.setString(1, username);
-             ResultSet rs = statement.executeQuery();
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
 
-             if (rs.next()) {
+            if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
                 user.setUsername(rs.getString("username"));

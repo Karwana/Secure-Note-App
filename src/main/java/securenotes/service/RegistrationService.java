@@ -19,6 +19,6 @@ public class RegistrationService {
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        return repository.saveUser(username,hashedPassword, "USER");
+        return repository.saveUser(username, hashedPassword, "USER");
     }
 }

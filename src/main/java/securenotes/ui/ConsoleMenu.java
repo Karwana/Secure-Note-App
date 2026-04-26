@@ -1,14 +1,20 @@
 package securenotes.ui;
 
+import securenotes.model.Note;
+import securenotes.model.User;
 import securenotes.service.AuthenticationService;
+import securenotes.service.NoteService;
 import securenotes.service.RegistrationService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleMenu {
     private final Scanner scanner = new Scanner(System.in);
     private final RegistrationService regiService = new RegistrationService();
     private final AuthenticationService authService = new AuthenticationService();
+    private final NoteService noteService = new NoteService();
+    private User loggedInUser;
 
     public void start() {
         boolean running = true;
@@ -40,8 +46,8 @@ public class ConsoleMenu {
             String choice = scanner.nextLine();
 
             switch (choice) {
-               // case "1" -> createNote();
-               // case "2" -> viewNote();
+                case "1" -> createNote();
+                case "2" -> viewNote();
                 case "3" -> running = false;
                 default -> System.out.println("Invalid choice");
             }
@@ -72,9 +78,9 @@ public class ConsoleMenu {
         System.out.println("Password: ");
         String password = scanner.nextLine();
 
-        boolean success = authService.login(username, password);
+        loggedInUser = authService.login(username, password);
 
-        if (success) {
+        if (loggedInUser != null) {
             System.out.println("Login successful");
             mainMenu();
         } else {
@@ -82,4 +88,38 @@ public class ConsoleMenu {
         }
     }
 
+    private void createNote() {
+        System.out.println("Enter note title: ");
+        String title = scanner.nextLine();
+        System.out.println("Enter note content: ");
+        String content = scanner.nextLine();
+
+        boolean success = noteService.createNote(loggedInUser.getId(), title, content);
+
+        if (success) {
+            System.out.println("Note " + "(" + title + ")" + " created successfully");
+        } else {
+            System.out.println("Note creation failed");
+        }
+    }
+
+    private void viewNote() {
+        List<Note> notes = noteService.viewNote(loggedInUser.getId());
+        if (notes == null || notes.isEmpty()) {
+            System.out.println("No notes found");
+            return;
+        }
+        for (Note note : notes) {
+            System.out.println(note.getId() + " - " + note.getTitle());
+        }
+        System.out.println("Enter ID of note: ");
+        String pickedNoteId = scanner.nextLine();
+        for (Note note : notes) {
+            if (Integer.parseInt(pickedNoteId) == note.getId()) {
+                System.out.println(note.getContent());
+            }
+        }
+    }
 }
+
+

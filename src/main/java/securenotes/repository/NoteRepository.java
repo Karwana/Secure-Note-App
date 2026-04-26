@@ -1,0 +1,58 @@
+package securenotes.repository;
+
+import securenotes.config.DatabaseConnection;
+import securenotes.model.Note;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class NoteRepository {
+
+    public boolean saveNote(int userId, String title, String content) {
+        String sql = "INSERT INTO notes (user_id, title, content) VALUES (?, ?, ?)";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+            statement.setString(2, title);
+            statement.setString(3, content);
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Note> getNoteByUserId(int userId) {
+        String sql = "SELECT * FROM notes WHERE user_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+
+            ResultSet rs = statement.executeQuery();
+
+            List<Note> notes = new ArrayList<>();
+            while (rs.next()) {
+                Note note = new Note();
+                note.setId(rs.getInt("id"));
+                note.setContent(rs.getString("content"));
+                note.setTitle(rs.getString("title"));
+                note.setUserId(rs.getInt("user_id"));
+                notes.add(note);
+            }
+            return notes;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
