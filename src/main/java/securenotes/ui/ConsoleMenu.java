@@ -42,13 +42,15 @@ public class ConsoleMenu {
             System.out.println("\n[Welcome to the Secure Notes App]");
             System.out.println("1. Create Note");
             System.out.println("2. View Notes");
-            System.out.println("3. Logout");
+            System.out.println("3. Change Password");
+            System.out.println("4. Logout");
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> createNote();
                 case "2" -> viewNote();
-                case "3" -> running = false;
+                case "3" -> changePassword();
+                case "4" -> running = false;
                 default -> System.out.println("Invalid choice");
             }
 
@@ -118,6 +120,17 @@ public class ConsoleMenu {
             if (Integer.parseInt(pickedNoteId) == note.getId()) {
                 System.out.println(note.getContent());
             }
+        }
+    }
+
+    private void changePassword() {
+        System.out.println("Enter new password: ");
+        String newPassword = scanner.nextLine();
+
+        if (authService.changeUserPassword(loggedInUser.getUsername(), newPassword)) {
+            System.out.println("Password changed successfully");
+        } else {
+            System.out.println("Password change failed");
         }
     }
 }
