@@ -42,15 +42,19 @@ public class ConsoleMenu {
             System.out.println("\n[Welcome to the Secure Notes App]");
             System.out.println("1. Create Note");
             System.out.println("2. View Notes");
-            System.out.println("3. Change Password");
-            System.out.println("4. Logout");
+            System.out.println("3. Edit Note");
+            System.out.println("4. Delete Note");
+            System.out.println("5. Change Password");
+            System.out.println("6. Logout");
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> createNote();
                 case "2" -> viewNote();
-                case "3" -> changePassword();
-                case "4" -> running = false;
+                case "3" -> editNote();
+                case "4" -> deleteNote();
+                case "5" -> changePassword();
+                case "6" -> running = false;
                 default -> System.out.println("Invalid choice");
             }
 
@@ -131,6 +135,46 @@ public class ConsoleMenu {
             System.out.println("Password changed successfully");
         } else {
             System.out.println("Password change failed");
+        }
+    }
+
+    private void editNote() {
+        List<Note> notes = noteService.viewNote(loggedInUser.getId());
+        if (notes == null || notes.isEmpty()) {
+            System.out.println("No notes found");
+            return;
+        }
+        System.out.println("Select note to edit: ");
+        for (Note note : notes) {
+            System.out.println(note.getId() + " - " + note.getTitle());
+        }
+        System.out.println("Enter note ID: ");
+        String noteId = scanner.nextLine();
+        System.out.println("Enter new content: ");
+        String newContent = scanner.nextLine();
+
+        if (noteService.editNote(Integer.parseInt(noteId), newContent)) {
+            System.out.println("Note edited successfully");
+        } else {
+            System.out.println("Note not found or could not be edited");
+        }
+    }
+
+    private void deleteNote() {
+        List<Note> notes = noteService.viewNote(loggedInUser.getId());
+        if (notes == null || notes.isEmpty()) {
+            System.out.println("No notes found");
+            return;
+        }
+        for (Note note : notes) {
+            System.out.println(note.getId() + " - " + note.getTitle());
+        }
+        System.out.println("Enter ID of note to delete: ");
+        String noteId = scanner.nextLine();
+        if (noteService.deleteNote(Integer.parseInt(noteId))) {
+            System.out.println("Note deleted successfully");
+        } else {
+            System.out.println("Note deletion failed");
         }
     }
 }

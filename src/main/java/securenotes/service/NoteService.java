@@ -28,5 +28,19 @@ public class NoteService {
         return null;
     }
 
+    public boolean editNote(int id, String content) {
+        if (content == null || content.isBlank()) {
+            System.out.println("Note cannot be empty.");
+            return false;
+        }
+        return repository.editNote(id, content);
+    }
 
+    public boolean deleteNote(int id) {
+        if (id <= 0) {
+            System.out.println("No note found.");
+            return false;
+        }
+        return repository.deleteNote(id);
+    }
 }

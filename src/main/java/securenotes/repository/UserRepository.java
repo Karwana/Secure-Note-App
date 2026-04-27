@@ -64,6 +64,7 @@ public class UserRepository {
             return false;
         }
     }
+
     public boolean changeUserPassword(String username, String newPassword) {
         String sql = "UPDATE users SET password = ? WHERE username = ?";
 

@@ -35,7 +35,7 @@ public class NoteRepository {
         String sql = "SELECT * FROM notes WHERE user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
 
             ResultSet rs = statement.executeQuery();
@@ -54,5 +54,36 @@ public class NoteRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean editNote(int id, String content) {
+        String sql = "UPDATE notes SET content = ? WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, content);
+            statement.setInt(2, id);
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteNote(int id) {
+        String sql = "DELETE FROM notes WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
