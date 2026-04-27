@@ -16,6 +16,10 @@ public class RegistrationService {
             System.out.println("Password is empty");
             return false;
         }
+        if (repository.userExists(username)) {
+            System.out.println("Username already taken, try again");
+            return false;
+        }
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 

@@ -50,4 +50,18 @@ public class UserRepository {
         }
         return null;
     }
+
+    public boolean userExists(String username) {
+        String sql = "SELECT id FROM users WHERE username = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

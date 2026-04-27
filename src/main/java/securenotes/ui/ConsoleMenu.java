@@ -39,7 +39,7 @@ public class ConsoleMenu {
     public void mainMenu() {
         boolean running = true;
         while (running) {
-            System.out.println("Welcome to the Secure Notes App");
+            System.out.println("\n[Welcome to the Secure Notes App]");
             System.out.println("1. Create Note");
             System.out.println("2. View Notes");
             System.out.println("3. Logout");
