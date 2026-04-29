@@ -16,6 +16,10 @@ public class RegistrationService {
             System.out.println("Password is empty");
             return false;
         }
+        if (password.length() < 6) {
+            System.out.println("Password must be at least 6 characters long");
+            return false;
+        }
         if (repository.userExists(username)) {
             System.out.println("Username already taken, try again");
             return false;

@@ -25,6 +25,10 @@ public class AuthenticationService {
             System.out.println("Password cannot be empty");
             return false;
         }
+        if (newPassword.length() < 6) {
+            System.out.println("Password must be at least 6 characters long");
+            return false;
+        }
         User user = repository.getUserByUsername(username);
         if (BCrypt.checkpw(newPassword, user.getPassword())) {
             System.out.println("You cannot use the same password");
