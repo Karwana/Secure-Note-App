@@ -62,6 +62,24 @@ public class ConsoleMenu {
 
     }
 
+    public void adminMenu() {
+        boolean running = true;
+        while (running) {
+            System.out.println("\n[Welcome to the Secure Notes App (Admin menu)]");
+            System.out.println("1. View User Notes");
+            System.out.println("2. Delete User Notes");
+            System.out.println("3. Logout");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> adminViewNote();
+                case "2" -> adminDeleteNote();
+                case "3" -> running = false;
+                default -> System.out.println("Invalid choice");
+            }
+        }
+    }
+
     private void register() {
         System.out.println("Enter username: ");
         String username = scanner.nextLine();
@@ -86,11 +104,15 @@ public class ConsoleMenu {
 
         loggedInUser = authService.login(username, password);
 
-        if (loggedInUser != null) {
-            System.out.println("Login successful");
-            mainMenu();
-        } else {
+        if (loggedInUser == null) {
             System.out.println("Login failed");
+            return;
+        }
+        System.out.println("Login successful");
+        if (loggedInUser.getRole().equals("ADMIN")) {
+            adminMenu();
+        } else {
+            mainMenu();
         }
     }
 
@@ -162,6 +184,42 @@ public class ConsoleMenu {
 
     private void deleteNote() {
         List<Note> notes = noteService.viewNote(loggedInUser.getId());
+        if (notes == null || notes.isEmpty()) {
+            System.out.println("No notes found");
+            return;
+        }
+        for (Note note : notes) {
+            System.out.println(note.getId() + " - " + note.getTitle());
+        }
+        System.out.println("Enter ID of note to delete: ");
+        String noteId = scanner.nextLine();
+        if (noteService.deleteNote(Integer.parseInt(noteId))) {
+            System.out.println("Note deleted successfully");
+        } else {
+            System.out.println("Note deletion failed");
+        }
+    }
+
+    private void adminViewNote() {
+        List<Note> notes = noteService.adminGetAllNotes();
+        if (notes == null || notes.isEmpty()) {
+            System.out.println("No notes found");
+            return;
+        }
+        for (Note note : notes) {
+            System.out.println(note.getId() + " - " + note.getTitle());
+        }
+        System.out.println("Enter ID of note: ");
+        String pickedNoteId = scanner.nextLine();
+        for (Note note : notes) {
+            if (Integer.parseInt(pickedNoteId) == note.getId()) {
+                System.out.println(note.getContent());
+            }
+        }
+    }
+
+    private void adminDeleteNote() {
+        List<Note> notes = noteService.adminGetAllNotes();
         if (notes == null || notes.isEmpty()) {
             System.out.println("No notes found");
             return;

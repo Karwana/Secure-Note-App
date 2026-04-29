@@ -43,4 +43,8 @@ public class NoteService {
         }
         return repository.deleteNote(id);
     }
+
+    public List<Note> adminGetAllNotes() {
+        return repository.adminGetAllNotes();
+    }
 }

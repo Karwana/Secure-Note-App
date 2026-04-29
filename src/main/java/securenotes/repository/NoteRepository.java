@@ -3,10 +3,7 @@ package securenotes.repository;
 import securenotes.config.DatabaseConnection;
 import securenotes.model.Note;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,5 +82,28 @@ public class NoteRepository {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<Note> adminGetAllNotes() {
+        String sql = "SELECT * FROM notes";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
+
+            List<Note> notes = new ArrayList<>();
+            while (rs.next()) {
+                Note note = new Note();
+                note.setId(rs.getInt("id"));
+                note.setContent(rs.getString("content"));
+                note.setTitle(rs.getString("title"));
+                note.setUserId(rs.getInt("user_id"));
+                notes.add(note);
+            }
+            return notes;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
