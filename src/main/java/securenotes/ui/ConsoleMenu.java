@@ -175,7 +175,7 @@ public class ConsoleMenu {
         System.out.println("Enter new content: ");
         String newContent = scanner.nextLine();
 
-        if (noteService.editNote(Integer.parseInt(noteId), newContent)) {
+        if (noteService.editNote(Integer.parseInt(noteId), loggedInUser.getId(), newContent)) {
             System.out.println("Note edited successfully");
         } else {
             System.out.println("Note not found or could not be edited");
@@ -193,7 +193,7 @@ public class ConsoleMenu {
         }
         System.out.println("Enter ID of note to delete: ");
         String noteId = scanner.nextLine();
-        if (noteService.deleteNote(Integer.parseInt(noteId))) {
+        if (noteService.deleteNote(Integer.parseInt(noteId), loggedInUser.getId())) {
             System.out.println("Note deleted successfully");
         } else {
             System.out.println("Note deletion failed");
@@ -229,7 +229,7 @@ public class ConsoleMenu {
         }
         System.out.println("Enter ID of note to delete: ");
         String noteId = scanner.nextLine();
-        if (noteService.deleteNote(Integer.parseInt(noteId))) {
+        if (noteService.adminDeleteNote(Integer.parseInt(noteId))) {
             System.out.println("Note deleted successfully");
         } else {
             System.out.println("Note deletion failed");

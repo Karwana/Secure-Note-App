@@ -28,23 +28,27 @@ public class NoteService {
         return null;
     }
 
-    public boolean editNote(int id, String content) {
+    public boolean editNote(int id, int userId, String content) {
         if (content == null || content.isBlank()) {
             System.out.println("Note cannot be empty.");
             return false;
         }
-        return repository.editNote(id, content);
+        return repository.editNote(id, userId, content);
     }
 
-    public boolean deleteNote(int id) {
+    public boolean deleteNote(int id, int userId) {
         if (id <= 0) {
             System.out.println("No note found.");
             return false;
         }
-        return repository.deleteNote(id);
+        return repository.deleteNote(id, userId);
     }
 
     public List<Note> adminGetAllNotes() {
         return repository.adminGetAllNotes();
+    }
+
+    public boolean adminDeleteNote(int id) {
+        return repository.adminDeleteNote(id);
     }
 }

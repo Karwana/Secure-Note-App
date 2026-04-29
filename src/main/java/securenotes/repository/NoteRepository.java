@@ -53,13 +53,14 @@ public class NoteRepository {
         return null;
     }
 
-    public boolean editNote(int id, String content) {
-        String sql = "UPDATE notes SET content = ? WHERE id = ?";
+    public boolean editNote(int id, int userId, String content) {
+        String sql = "UPDATE notes SET content = ? WHERE id = ? AND user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, content);
             statement.setInt(2, id);
+            statement.setInt(3, userId);
 
             int rows = statement.executeUpdate();
             return rows > 0;
@@ -69,12 +70,13 @@ public class NoteRepository {
         }
     }
 
-    public boolean deleteNote(int id) {
-        String sql = "DELETE FROM notes WHERE id = ?";
+    public boolean deleteNote(int id, int userId) {
+        String sql = "DELETE FROM notes WHERE id = ? AND user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
+            statement.setInt(2, userId);
 
             int rows = statement.executeUpdate();
             return rows > 0;
@@ -105,5 +107,18 @@ public class NoteRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean adminDeleteNote(int id) {
+        String sql = "DELETE FROM notes WHERE id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            int rows = statement.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
