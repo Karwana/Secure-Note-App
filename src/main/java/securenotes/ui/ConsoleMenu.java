@@ -207,7 +207,8 @@ public class ConsoleMenu {
             return;
         }
         for (Note note : notes) {
-            System.out.println(note.getId() + " - " + note.getTitle());
+            System.out.println("ID: " + note.getId() + " | " +
+                    note.getTitle() + " | Owner: " + note.getUserId());
         }
         System.out.println("Enter ID of note: ");
         String pickedNoteId = scanner.nextLine();
@@ -225,7 +226,8 @@ public class ConsoleMenu {
             return;
         }
         for (Note note : notes) {
-            System.out.println(note.getId() + " - " + note.getTitle());
+            System.out.println("ID: " + note.getId() + " | " +
+                    note.getTitle() + " | Owner: " + note.getUserId());
         }
         System.out.println("Enter ID of note to delete: ");
         String noteId = scanner.nextLine();
